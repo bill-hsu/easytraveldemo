@@ -69,6 +69,10 @@ docker run -ti --rm \
 
 Please refer to the [tutorials section](https://github.com/dynatrace-innovationlab/easyTravel-OpenShift/tree/master/tutorials/) on how to set up Dynatrace for OpenShift using Ansible.
 
+## Additional Resources
+
+- Blog: [Monitoring OpenShift Apps with Dynatrace](https://blog.openshift.com/openshift-ecosystem-monitoring-openshift-apps-with-dynatrace/)
+
 ## License
 
 Licensed under the MIT License. See the [LICENSE](https://github.com/dynatrace-innovationlab/easyTravel-OpenShift/blob/master/LICENSE) file for details.
