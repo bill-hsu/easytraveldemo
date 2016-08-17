@@ -12,6 +12,7 @@ This project deploys the [Dynatrace easyTravel](https://community.dynatrace.com/
 | easytravel-backend  | The easyTravel Business Backend (Java).
 | easytravel-frontend | The easyTravel Customer Frontend (Java).
 | easytravel-www      | A reverse-proxy for the easyTravel Customer Frontend (NGINX).
+| loadgen             | A synthetic UEM load generator (Java).
 
 ## Prerequisites
 
@@ -27,8 +28,7 @@ Login as *system:admin* and grant rights to user *admin* via:
 
 ```
 oc login https://${OS_MASTER_IP}:8443 -u system:admin
-oc new-project easytravel
-oc adm policy add-role-to-user cluster-admin admin -n easytravel
+oc adm policy add-role-to-user cluster-admin admin
 oc adm policy add-scc-to-user anyuid -z default -n easytravel
 ```
 
@@ -48,22 +48,7 @@ oc port-forward easytravel-www-123abc 32123:80
 
 ### 3. Apply Synthetic Load
 
-With the `easytravel-www` service being exposed, you can apply synthetic load using the *UEM Load Generator* component from our [easyTravel-Docker](https://github.com/dynatrace-innovationlab/easyTravel-Docker) project. Suppose the service has been made available on `http://localhost:32123`:
-
-```
-docker run -ti --rm \
-  --env ET_FRONTEND_URL='http://localhost:32123' \
-  dynatrace/easytravel-loadgen
-```
-
-By additionally exposing the `easytravel-backend` service and providing its URL through `ET_BACKEND_URL`, the *UEM Load Generator* component will continually apply problems from an initial set of easyTravel problem patterns, as described [here](https://github.com/dynatrace-innovationlab/easyTravel-Docker). Suppose the service has been made available on `http://localhost:32124`:
-
-```
-docker run -ti --rm \
-  --env ET_FRONTEND_URL='http://localhost:32123' \
-  --env ET_BACKEND_URL='http://localhost:32124' \
-  dynatrace/easytravel-loadgen
-```
+When deploying `templates/easytravel-with-loadgen.yml` instead of `templates/easytravel.yml` in `deploy.sh`, the UEM Load Generator component will be deployed together with easyTravel and will continually activate problems from a predefined list in round-robin fashion.
 
 ## Monitoring easyTravel with Dynatrace
 
